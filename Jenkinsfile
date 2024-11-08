@@ -30,7 +30,7 @@ pipeline {
                                     url: 'http://192.168.0.103:8010/manager/text'
                                 )
                             ],
-                            contextPath: '/Test', 
+                            contextPath: '/arista', 
                             war: '**/target/*.war'
                         }
                     }
