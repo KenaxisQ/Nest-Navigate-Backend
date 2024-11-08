@@ -3,23 +3,22 @@ pipeline {
     
     tools {
         maven 'local_home'
-  
     }
 
-stages{
-        stage('Build'){
+    stages {
+        stage('Build') {
             steps {
                 bat 'mvn clean package'
             }
             post {
                 success {
                     echo 'Archiving the artifacts'
-                    archiveArtifacts artifacts: '**/target/*.war'
+                    archiveArtifacts artifacts: '**/target/*.war', followSymlinks: false
                 }
             }
         }
 
-         stage('Deployments') {
+        stage('Deployments') {
             parallel {
                 stage('Deploy to Staging') {
                     steps {
@@ -31,8 +30,9 @@ stages{
                                     url: 'http://192.168.0.103:8010/manager/text'
                                 )
                             ],
-                            contextPath:'/Test', 
+                            contextPath: '/Test', 
                             war: '**/target/*.war'
+                        }
                     }
                 }
             }
