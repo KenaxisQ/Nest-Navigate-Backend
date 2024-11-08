@@ -19,11 +19,20 @@ stages{
             }
         }
 
-        stage ('Deployments'){
-            parallel{
-                stage ("Deploy to Staging"){
+         stage('Deployments') {
+            parallel {
+                stage('Deploy to Staging') {
                     steps {
-                        deploy adapters: [tomcat9(credentialsId: 'a0648c3d-5712-4bca-be90-971918a9fa68', path: '', url: 'http://192.168.0.103:8010/')], contextPath: null, jar: '**/*.jar'
+                        script {
+                            deploy adapters: [
+                                tomcat9(
+                                    credentialsId: 'd5c4c4d0-c831-4f86-8383-a5cbae9ba5cc',
+                                    path: '',
+                                    url: 'http://192.168.0.103:8010/manager/text'
+                                )
+                            ],
+                            contextPath:'/Test', 
+                            war: '**/target/*.war'
                     }
                 }
             }
