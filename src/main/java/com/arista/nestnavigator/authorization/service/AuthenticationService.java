@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,8 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationService.class);
+
+    @Autowired
     public AuthenticationService(UserRepository repository,
                                  PasswordEncoder passwordEncoder,
                                  @Lazy JwtService jwtService,

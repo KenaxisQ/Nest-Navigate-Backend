@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import com.arista.nestnavigator.custom_exceptions.InvalidTokenException;
 @Service
 public class JwtService {
 
-    private final AuthenticationService authenticationService;
+
     @Value("${application.security.jwt.secret-key}")
     private String secretKey;
 
@@ -27,12 +28,10 @@ public class JwtService {
     @Value("${application.security.jwt.refresh-token-expiration}")
     private long refreshTokenExpire;
 
-
     private final TokenRepository tokenRepository;
-
+    @Autowired
     public JwtService(TokenRepository tokenRepository, AuthenticationService authenticationService) {
         this.tokenRepository = tokenRepository;
-        this.authenticationService = authenticationService;
     }
 
     public String extractUsername(String token) {
