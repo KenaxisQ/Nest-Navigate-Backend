@@ -2,8 +2,8 @@ package com.arista.nestnavigator.user.service;
 
 import com.arista.nestnavigator.user.entity.User;
 import com.arista.nestnavigator.user.repository.UserRepository;
-import com.arista.nestnavigator.user.utils.ApiException;
-import com.arista.nestnavigator.user.utils.ErrorCodes;
+import com.arista.nestnavigator.custom_exceptions.ApiException;
+import com.arista.nestnavigator.custom_exceptions.ErrorCodes;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

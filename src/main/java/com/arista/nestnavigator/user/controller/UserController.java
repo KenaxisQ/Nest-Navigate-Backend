@@ -3,9 +3,9 @@ package com.arista.nestnavigator.user.controller;
 import com.arista.nestnavigator.user.entity.User;
 import com.arista.nestnavigator.user.service.UserService;
 
-import com.arista.nestnavigator.user.utils.ApiException;
+import com.arista.nestnavigator.custom_exceptions.ApiException;
 import com.arista.nestnavigator.user.utils.ApiResponse;
-import com.arista.nestnavigator.user.utils.ErrorCodes;
+import com.arista.nestnavigator.custom_exceptions.ErrorCodes;
 import com.arista.nestnavigator.user.utils.ResponseBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 
@@ -26,6 +28,8 @@ public class UserController {
     @Autowired
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(User.class);
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -68,53 +72,6 @@ public class UserController {
             return ResponseEntity.ok(ResponseBuilder.success(usersList, "Users Fetch Successful", executionTime));
         else throw new ApiException(ErrorCodes.USER_EMPTY);
     }
-
-    @PostMapping("/signin")
-    public ResponseEntity<ApiResponse<User>> createUser(@RequestBody User user) {
-        long startTime = System.currentTimeMillis();
-        logger.info(String.format("User Controller: createUser(): Creating User: %s %s", user.getLastname(), user.getFirstname()));
-
-        // Validate mandatory fields
-        List<String> missingFields = new ArrayList<>();
-        if (user.getFirstname() == null) missingFields.add("firstname");
-        if (user.getLastname() == null) missingFields.add("lastname");
-        if (user.getEmail() == null) missingFields.add("email");
-        if (user.getPhone() == null) missingFields.add("phone");
-        if (user.getUsername() == null) missingFields.add("username");
-        if (user.getPassword() == null) missingFields.add("password");
-
-        if (missingFields.size() == 6) {
-            String missingFieldsMessage = "Please provide the necessary user information : " + String.join(", ", missingFields);
-            throw new ApiException("USER_INFO_MISSING", missingFieldsMessage, HttpStatus.BAD_REQUEST);
-        }
-
-        if (!missingFields.isEmpty()) {
-            String missingFieldsMessage = "Missing mandatory fields: " + String.join(", ", missingFields);
-            throw new ApiException("MANDATORY_FIELD_MISSING", missingFieldsMessage, HttpStatus.BAD_REQUEST);
-        }
-
-
-        // Check for duplicate properties
-        List<String> duplicateFields = new ArrayList<>();
-        if (userService.getUserByUsername(user.getUsername()) != null) duplicateFields.add("username");
-        if (userService.getUserByEmail(user.getEmail()) != null) duplicateFields.add("email");
-        if (userService.getUserByPhone(user.getPhone()) != null) duplicateFields.add("phone");
-
-        if (!duplicateFields.isEmpty()) {
-            String duplicateFieldsMessage = "Duplicate properties: " + String.join(", ", duplicateFields);
-            throw new ApiException("DUPLICATE_PROPERTIES", duplicateFieldsMessage, HttpStatus.CONFLICT);
-        }
-
-        try {
-            userService.createUser(user);
-            long executionTime = System.currentTimeMillis() - startTime;
-            return ResponseEntity.ok(ResponseBuilder.success(user, "User Created Successfully", executionTime));
-        } catch (Exception ex) {
-            logger.error("Error While Creating User !!");
-            throw new ApiException("UNKNOWN_EXCEPTION", ex.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-
     @PutMapping
     public ResponseEntity<ApiResponse<User>> updateUser(@RequestBody User user) {
         long startTime = System.currentTimeMillis();
@@ -160,7 +117,7 @@ public class UserController {
             }
             if (user.getFirstname() != null) existingUser.setFirstname(user.getFirstname());
             if (user.getLastname() != null) existingUser.setLastname(user.getLastname());
-            if (user.getPassword() != null) existingUser.setPassword(user.getPassword());
+            if (user.getPassword() != null) existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
             if (user.getRole() != null) existingUser.setRole(user.getRole());
             if (user.getProperties_listed() > 0) existingUser.setProperties_listed(user.getProperties_listed());
             if (user.getProperties_listing_limit() > 0)
@@ -177,7 +134,6 @@ public class UserController {
             throw new ApiException("UNKNOWN_EXCEPTION", ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<String>> deleteUser(@PathVariable String id) {
         long executionTime;

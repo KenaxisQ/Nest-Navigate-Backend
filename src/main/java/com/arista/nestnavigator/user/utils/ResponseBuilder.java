@@ -1,5 +1,6 @@
 package com.arista.nestnavigator.user.utils;
 
+import com.arista.nestnavigator.custom_exceptions.ApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 

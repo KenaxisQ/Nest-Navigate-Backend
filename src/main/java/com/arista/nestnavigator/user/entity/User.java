@@ -64,6 +64,9 @@ public class User implements UserDetails {
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime createdAt;
+//
+//    @Column(nullable = true)
+//    private String profilePic;
 
     public User(String firstName, String lastName, String email, String phone, String username, String password) {
       setFirstname(firstName);
@@ -110,6 +113,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public void incrementPropertiesListed() {
+        setProperties_listed(getProperties_listed()+1);
     }
 }
 

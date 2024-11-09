@@ -3,6 +3,8 @@ package com.arista.nestnavigator.user.controller;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.arista.nestnavigator.custom_exceptions.ApiException;
+import com.arista.nestnavigator.custom_exceptions.ErrorCodes;
 import com.arista.nestnavigator.user.entity.User;
 import com.arista.nestnavigator.user.service.UserService;
 import com.arista.nestnavigator.user.utils.*;
