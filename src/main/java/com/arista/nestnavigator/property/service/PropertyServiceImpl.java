@@ -15,14 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class PropertyImplService implements PropertyService{
+public class PropertyServiceImpl implements PropertyService{
 
     private final UserRepository userRepository;
     private final PropertyController propertyController;
@@ -30,7 +29,7 @@ public class PropertyImplService implements PropertyService{
     private UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(Property.class);
     @Autowired
-    public PropertyImplService(PropertyRepository propertyRepository,
+    public PropertyServiceImpl(PropertyRepository propertyRepository,
                                UserRepository userRepository,
                                UserServiceImpl userServiceImpl,
                                UserService userService, PropertyController propertyController) {
@@ -108,31 +107,119 @@ public class PropertyImplService implements PropertyService{
 
     @Override
     public Property updateProperty(Property property) {
-        try{
-            Property existingProperty = propertyRepository.findPropertyById(property.getId());
-            if(existingProperty!=null){
-                if(property.getTitle()!=null)
-                    existingProperty.setTitle(property.getTitle());
-                if(property.getType()!=null)
-                    existingProperty.setType(property.getType());
-                if(property.getPropertyCategory()!=null)
-                    existingProperty.setPropertyCategory(property.getPropertyCategory());
-                if(property.getFacing()!=null)
-                    existingProperty.setFacing(property.getFacing());
+        try {
+            Optional<Property> propertyOptional = propertyRepository.findById(property.getId());
+            if (!propertyOptional.isPresent()) {
+                throw new ApiException("ERR_PROPERTY_NOT_FOUND",
+                        "No Property with Id: " + property.getId() + " found!!", HttpStatus.NOT_FOUND);
             }
-            else throw new ApiException("ERR_PROPERTY_NOT_FOUND",
-                    "No Property with Id: "+ property.getId() +" found!!"
-                    , HttpStatus.NOT_FOUND);
-        }
-        catch (ApiException ex){
+            Property existingProperty = propertyOptional.get();
+
+            if (property.getTitle() != null) {
+                existingProperty.setTitle(property.getTitle());
+            }
+            if (property.getType() != null) {
+                existingProperty.setType(property.getType());
+            }
+            if (property.getPropertyCategory() != null) {
+                existingProperty.setPropertyCategory(property.getPropertyCategory());
+            }
+            if (property.getFacing() != null) {
+                existingProperty.setFacing(property.getFacing());
+            }
+            if (property.getPropertyListingFor() != null) {
+                existingProperty.setPropertyListingFor(property.getPropertyListingFor());
+            }
+            if (property.getProjectName() != null) {
+                existingProperty.setProjectName(property.getProjectName());
+            }
+            if (property.getSubProperty() != null) {
+                existingProperty.setSubProperty(property.getSubProperty());
+            }
+            if (property.getFurnitureStatus() != null) {
+                existingProperty.setFurnitureStatus(property.getFurnitureStatus());
+            }
+            if (property.getFurnitureStatusDescription() != null) {
+                existingProperty.setFurnitureStatusDescription(property.getFurnitureStatusDescription());
+            }
+            if (property.getDescription() != null) {
+                existingProperty.setDescription(property.getDescription());
+            }
+            if (property.getSuper_builtup_area() != null) {
+                existingProperty.setSuper_builtup_area(property.getSuper_builtup_area());
+            }
+            if (property.getCarpet_area() != null) {
+                existingProperty.setCarpet_area(property.getCarpet_area());
+            }
+            if (property.getPrice() != null) {
+                existingProperty.setPrice(property.getPrice());
+            }
+            if (property.getAdvance() != null) {
+                existingProperty.setAdvance(property.getAdvance());
+            }
+            if (property.getIsNegotiable() != null) {
+                existingProperty.setIsNegotiable(property.getIsNegotiable());
+            }
+            if (property.getStatus() != null) {
+                existingProperty.setStatus(property.getStatus());
+            }
+            if (property.getIsFeatured() != null) {
+                existingProperty.setIsFeatured(property.getIsFeatured());
+            }
+            if (property.getListedDate() != null) {
+                existingProperty.setListedDate(property.getListedDate());
+            }
+            if (property.getUpdatedDate() != null) {
+                existingProperty.setUpdatedDate(property.getUpdatedDate());
+            }
+            if (property.getExpiryDate() != null) {
+                existingProperty.setExpiryDate(property.getExpiryDate());
+            }
+            if (property.getListedby() != null) {
+                existingProperty.setListedby(property.getListedby());
+            }
+            if (property.getContact() != null) {
+                existingProperty.setContact(property.getContact());
+            }
+            if (property.getState() != null) {
+                existingProperty.setState(property.getState());
+            }
+            if (property.getCountry() != null) {
+                existingProperty.setCountry(property.getCountry());
+            }
+            if (property.getRevenueDivision() != null) {
+                existingProperty.setRevenueDivision(property.getRevenueDivision());
+            }
+            if (property.getMandal() != null) {
+                existingProperty.setMandal(property.getMandal());
+            }
+            if (property.getVillage() != null) {
+                existingProperty.setVillage(property.getVillage());
+            }
+            if (property.getZip() != null) {
+                existingProperty.setZip(property.getZip());
+            }
+            if (property.getLongitude() != null) {
+                existingProperty.setLongitude(property.getLongitude());
+            }
+            if (property.getLatitude() != null) {
+                existingProperty.setLatitude(property.getLatitude());
+            }
+            if (property.getViews() != 0) {
+                existingProperty.setViews(property.getViews());
+            }
+            if (property.getLikes() != 0) {
+                existingProperty.setLikes(property.getLikes());
+            }
+
+            Property updatedProperty = propertyRepository.save(existingProperty);
+            return updatedProperty;
+        } catch (ApiException ex) {
             throw ex;
-        }
-        catch (Exception ex){
+        } catch (Exception ex) {
             throw new ApiException("ERR_PROPERTY_UPDATE",
-                    ex.getMessage()
-                    , HttpStatus.BAD_REQUEST);
+                    "Error updating property: " + ex.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        return property;
     }
 
     public Property saveProperty(Property property, String userId) {

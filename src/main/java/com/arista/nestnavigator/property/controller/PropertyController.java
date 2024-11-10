@@ -24,6 +24,11 @@ public class PropertyController {
     public PropertyController(@Lazy PropertyService propertyService) {
         this.propertyService = propertyService;
     }
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<Property>> getPropertyDetails(@PathVariable String id){
+        Property property1 = propertyService.getPropertyById(id);
+        return ResponseEntity.ok(ResponseBuilder.success(property1,"Property Retrieved Successfully"));
+    }
     @GetMapping
     public ResponseEntity<ApiResponse<List<Property>>> getLandDetails(){
         try{
@@ -37,10 +42,23 @@ public class PropertyController {
             throw new ApiException("LAND_RETRIEVING","Error While Retrieving lands", HttpStatus.BAD_REQUEST);
         }
     }
+
         @PostMapping("/create")
         public ResponseEntity<ApiResponse<Property>> createProperty (@RequestBody Property property,@RequestParam String userid) throws ApiException{
         propertyService.saveProperty(property ,userid);
         return ResponseEntity.ok(ResponseBuilder.success(property,"Property Created Successfully"));
 
         }
+        @PutMapping("/update")
+        public ResponseEntity<ApiResponse<Property>> updateProperty (@RequestBody Property property) throws ApiException{
+        Property propertyToUpdate = propertyService.updateProperty(property);
+        return ResponseEntity.ok(ResponseBuilder.success(propertyToUpdate,"Property Updated Successfully"));
+        }
+
+        @DeleteMapping("/delete/{id}")
+        public ResponseEntity<ApiResponse<String>> deleteProperty (@PathVariable String id) throws ApiException{
+        propertyService.deleteProperty(id);
+        return ResponseEntity.ok(ResponseBuilder.success(id,"Property Deleted Successfully"));
+        }
+
 }

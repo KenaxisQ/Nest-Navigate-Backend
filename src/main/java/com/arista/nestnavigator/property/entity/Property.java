@@ -80,7 +80,7 @@ public class Property {
     private String status = PropertyStatus.AVAILABLE.name();
 
     @Column(nullable = false)
-    private boolean isFeatured = false;
+    private Boolean isFeatured = false;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
