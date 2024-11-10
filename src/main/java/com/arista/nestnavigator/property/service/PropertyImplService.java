@@ -135,6 +135,7 @@ public class PropertyImplService implements PropertyService{
     }
 
     public Property saveProperty(Property property) {
+        logger.info("Saving property: " + property.toString());
         List<String> errors = validateProperty(property);
         if (!errors.isEmpty()) {
             String errorMessage = errors.stream().collect(Collectors.joining(", "));
@@ -143,9 +144,6 @@ public class PropertyImplService implements PropertyService{
         }
 
         try {
-            property.setListedDate(LocalDateTime.now());
-            property.setExpiryDate(property.getListedDate().plus(30, ChronoUnit.DAYS));
-            property.setUpdatedDate(LocalDateTime.now());
             Property savedproperty = propertyRepository.save(property);
             logger.info("Property saved successfully: " + savedproperty);
             User user = property.getOwner();

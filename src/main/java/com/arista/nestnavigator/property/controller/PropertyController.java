@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +37,7 @@ public class PropertyController {
         }
     }
         @PostMapping("/create")
-        public ResponseEntity<ApiResponse<Property>> createProperty(Property property){
+        public ResponseEntity<ApiResponse<Property>> createProperty(@RequestBody Property property){
         propertyService.saveProperty(property);
         return ResponseEntity.ok(ResponseBuilder.success(property,"Property Created Successfully"));
 
