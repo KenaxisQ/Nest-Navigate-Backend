@@ -22,6 +22,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,8 +91,12 @@ public class AuthenticationService {
             user = repository.save(user);
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
+            LocalDateTime tokenCreatedAt = LocalDateTime.now();
             saveUserToken(accessToken, refreshToken, user);
-            return new AuthenticationResponse(accessToken, refreshToken,"User registration was successful");
+            return new AuthenticationResponse(accessToken, refreshToken,
+                    String.format("User registration was successful, Token Expires at: %s, Refresh Token Expires at: %s",
+                            tokenCreatedAt.plus(5, ChronoUnit.MINUTES),
+                            tokenCreatedAt.plus(10, ChronoUnit.MINUTES)));
         } catch (Exception ex) {
             logger.error("Error While Creating User !!");
             throw new ApiException("UNKNOWN_EXCEPTION", ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -113,8 +119,11 @@ public class AuthenticationService {
 
             revokeAllTokenByUser(user);
             saveUserToken(accessToken, refreshToken, user);
-
-            return new AuthenticationResponse(accessToken, refreshToken, "User login was successful");
+            LocalDateTime tokenCreatedAt = LocalDateTime.now();
+            return new AuthenticationResponse(accessToken, refreshToken,
+                    String.format("User registration was successful, Token Expires at: %s, Refresh Token Expires at: %s",
+                            tokenCreatedAt.plus(5, ChronoUnit.MINUTES),
+                            tokenCreatedAt.plus(10, ChronoUnit.MINUTES)));
         }
         else
             throw new ApiException(ErrorCodes.USER_NOT_FOUND);
@@ -168,8 +177,11 @@ public class AuthenticationService {
 
             revokeAllTokenByUser(user);
             saveUserToken(accessToken, refreshToken, user);
-
-            return new ResponseEntity(new AuthenticationResponse(accessToken, refreshToken, "New token generated"), HttpStatus.OK);
+            LocalDateTime tokenCreatedAt = LocalDateTime.now();
+            return new ResponseEntity(new AuthenticationResponse(accessToken, refreshToken,
+                    String.format("User registration was successful, Token Expires at: %s, Refresh Token Expires at: %s",
+                            tokenCreatedAt.plus(5, ChronoUnit.MINUTES),
+                            tokenCreatedAt.plus(10, ChronoUnit.MINUTES))), HttpStatus.OK);
         }
 
         return new ResponseEntity(HttpStatus.UNAUTHORIZED);

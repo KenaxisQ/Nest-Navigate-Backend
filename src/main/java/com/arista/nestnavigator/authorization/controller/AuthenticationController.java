@@ -63,7 +63,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/sign_out")
-    public ResponseEntity logout(
+    public ResponseEntity<ApiResponse<String>> logout(
             HttpServletRequest request,
             HttpServletResponse response) throws IOException {
         try{

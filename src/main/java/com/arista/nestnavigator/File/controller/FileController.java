@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping("file")
+@RequestMapping("/file")
 public class FileController {
     @PostMapping("/upload")
     public ResponseEntity<ApiResponse> upload(@RequestParam("media") MultipartFile[] media) {
