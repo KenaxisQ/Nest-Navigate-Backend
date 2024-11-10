@@ -14,5 +14,6 @@ public interface AmenityService {
     public String deleteAmenityFromId(String amenityId);
     public String deleteAmenityFromName(String amenityName);
     public Amenity getAmenityFromId(String amenityId);
+    public String addAllAmenitiesToDatabase();
 
 }

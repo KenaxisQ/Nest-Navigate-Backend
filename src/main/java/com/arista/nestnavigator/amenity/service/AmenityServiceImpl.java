@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -142,5 +143,13 @@ public class AmenityServiceImpl implements AmenityService {
         }
     }
 
-
+    @Override
+    public String addAllAmenitiesToDatabase() {
+        Arrays.stream(com.arista.nestnavigator.property.util.Amenity.values())
+                .forEach(enumAmenity -> {
+                    Amenity amenityEntity = new Amenity(enumAmenity.getDescription(), enumAmenity.getCategory().name());
+                    amenityRepository.save(amenityEntity);
+                });
+        return "All amenities added successfully";
+    }
 }

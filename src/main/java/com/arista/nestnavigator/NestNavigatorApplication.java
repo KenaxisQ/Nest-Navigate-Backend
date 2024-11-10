@@ -1,6 +1,7 @@
 package com.arista.nestnavigator;
 
 //import com.arista.nestnavigator.amenity.entity.Amenity;
+import com.arista.nestnavigator.amenity.service.AmenityService;
 import com.arista.nestnavigator.property.entity.LandForSale;
 import com.arista.nestnavigator.property.entity.Property;
 import com.arista.nestnavigator.property.service.PropertyService;
@@ -29,14 +30,17 @@ public class NestNavigatorApplication implements CommandLineRunner {
     private AuthenticationService authenticationService;
     private UserService userService;
     private PropertyService propertyService;
+    private AmenityService amenityService;
 
     @Autowired
     public NestNavigatorApplication(@Lazy AuthenticationService authenticationService
             ,UserService userService,
-                                    PropertyService propertyService) {
+                                    PropertyService propertyService,
+                                    AmenityService amenityService) {
         this.authenticationService = authenticationService;
         this.userService = userService;
         this.propertyService = propertyService;
+        this.amenityService = amenityService;
     }
 
 
@@ -69,28 +73,7 @@ public class NestNavigatorApplication implements CommandLineRunner {
         User user3 = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", "jane_smith", "securePass");
         authenticationService.register(user3);
         user3 = userService.getUserByUsername("jane_smith");
-
-        // Create property location instances
-        List<Amenity> amenities1 = Arrays.asList(Amenity.ROAD_ACCESS, Amenity.BOREWELL, Amenity.ELECTRICITY_CONNECTION);
-        List<Amenity> amenities2 = Arrays.asList(Amenity.CONTINUOUS_WATER_SUPPLY, Amenity.GATED_ACCESS, Amenity.PERIMETER_WALL);
-        List<Amenity> amenities3 = Arrays.asList(Amenity.ROAD_ACCESS, Amenity.BOREWELL, Amenity.SECURITY);
-
-        // Create LandForSale instances
-        LandForSale landForSale1 = new LandForSale(
-                TaxStatus.UP_TO_DATE, "No encumbrances", 2000.0, 50.0, 40.0, Directions.NORTH, true,
-                "5 years lease", "Renewable every 5 years", true, true, true, true, true, true,
-                "Near highway", amenities1, "Future shopping mall");
-
-        LandForSale landForSale2 = new LandForSale(
-                TaxStatus.PENDING, "Mortgage exists", 1800.0, 45.0, 40.0, Directions.EAST, false,
-                "3 years lease", "Renewable every 3 years", false, true, false, true, false, false,
-                "Near school", amenities2, "Upcoming park");
-
-        LandForSale landForSale3 = new LandForSale(
-                TaxStatus.UP_TO_DATE, "No encumbrances", 2500.0, 60.0, 45.0, Directions.SOUTH, true,
-                "10 years lease", "Renewable every 10 years", true, true, true, true, true, true,
-                "Near marketplace", amenities3, "Future industrial area");
-
+        amenityService.addAllAmenitiesToDatabase();
         // Create Property instances
         // Complete Property Object
         Property completeProperty = new Property();

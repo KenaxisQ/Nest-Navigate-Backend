@@ -18,6 +18,11 @@ public class Amenity {
     private String name;
     @Column(nullable = false)
     private String category;
-//    private String description;
+
+    //    private String description;
+    public Amenity(String name, String category) {
+        this.name = name;
+        this.category = category;
+    }
 
 }
