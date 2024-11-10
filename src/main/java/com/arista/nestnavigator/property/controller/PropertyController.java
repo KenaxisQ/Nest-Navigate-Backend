@@ -3,6 +3,7 @@ package com.arista.nestnavigator.property.controller;
 import com.arista.nestnavigator.property.entity.Property;
 import com.arista.nestnavigator.custom_exceptions.ApiException;
 import com.arista.nestnavigator.property.service.PropertyService;
+import com.arista.nestnavigator.user.entity.User;
 import com.arista.nestnavigator.user.utils.ApiResponse;
 import com.arista.nestnavigator.user.utils.ResponseBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,8 @@ public class PropertyController {
         }
     }
         @PostMapping("/create")
-        public ResponseEntity<ApiResponse<Property>> createProperty(@RequestBody Property property){
-        propertyService.saveProperty(property);
+        public ResponseEntity<ApiResponse<Property>> createProperty (@RequestBody Property property,@RequestParam String userid) throws ApiException{
+        propertyService.saveProperty(property ,userid);
         return ResponseEntity.ok(ResponseBuilder.success(property,"Property Created Successfully"));
 
         }

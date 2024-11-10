@@ -1,6 +1,7 @@
 package com.arista.nestnavigator.property.service;
 
 import com.arista.nestnavigator.custom_exceptions.ApiException;
+import com.arista.nestnavigator.custom_exceptions.ErrorCodes;
 import com.arista.nestnavigator.property.controller.PropertyController;
 import com.arista.nestnavigator.property.entity.Property;
 import com.arista.nestnavigator.property.repository.PropertyRepository;
@@ -134,8 +135,12 @@ public class PropertyImplService implements PropertyService{
         return property;
     }
 
-    public Property saveProperty(Property property) {
+    public Property saveProperty(Property property, String userId) {
         logger.info("Saving property: " + property.toString());
+        if(userService.getUser(userId) == null) {
+            throw new ApiException(ErrorCodes.USER_NOT_FOUND);
+        }
+        property.setOwner(userService.getUser(userId));
         List<String> errors = validateProperty(property);
         if (!errors.isEmpty()) {
             String errorMessage = errors.stream().collect(Collectors.joining(", "));

@@ -92,7 +92,7 @@ public class NestNavigatorApplication implements CommandLineRunner {
         completeProperty.setPrice(500000.0);
         completeProperty.setAdvance(50000.0);
         completeProperty.setIsNegotiable(true);
-        completeProperty.setOwner(user1);
+//        completeProperty.setOwner(user1);
         completeProperty.setStatus(PropertyStatus.AVAILABLE.name());
 //        completeProperty.setIsFeatured(true);
         completeProperty.setListedDate(LocalDateTime.now());
@@ -139,7 +139,7 @@ public class NestNavigatorApplication implements CommandLineRunner {
         minimalProperty.setSuper_builtup_area(600.0);
         minimalProperty.setPrice(800.0);
         minimalProperty.setIsNegotiable(false);
-        minimalProperty.setOwner(user2);
+//        minimalProperty.setOwner(user2);
         minimalProperty.setStatus(PropertyStatus.AVAILABLE.name());
         minimalProperty.setListedby(ListedBy.DEALER.name());
         minimalProperty.setContact("456-789-0123");
@@ -149,8 +149,8 @@ public class NestNavigatorApplication implements CommandLineRunner {
         minimalProperty.setMandal("Mandal Example");
         minimalProperty.setVillage("Village Example");
         minimalProperty.setZip("789012");
-        propertyService.saveProperty(completeProperty);
-        propertyService.saveProperty(minimalProperty);
+        propertyService.saveProperty(completeProperty,user1.getId());
+        propertyService.saveProperty(minimalProperty,user2.getId());
         // Example usage of created objects
 //        System.out.println(property1.toString());
 //        System.out.println(property2.toString());
