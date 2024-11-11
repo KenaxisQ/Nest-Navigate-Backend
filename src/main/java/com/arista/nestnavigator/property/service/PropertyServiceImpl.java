@@ -227,6 +227,11 @@ public class PropertyServiceImpl implements PropertyService{
         if(userService.getUser(userId) == null) {
             throw new ApiException(ErrorCodes.USER_NOT_FOUND);
         }
+        if(userService.getUser(userId).getProperties_listing_limit() <= 0) {
+            throw new ApiException("ERR_LISTING_LIMIT_EXCEED",
+                    "Your Limit for Posting Property Exceeded...",
+                    HttpStatus.BAD_REQUEST);
+        }
         property.setOwner(userService.getUser(userId));
         List<String> errors = validateProperty(property);
         if (!errors.isEmpty()) {
@@ -240,6 +245,7 @@ public class PropertyServiceImpl implements PropertyService{
             logger.info("Property saved successfully: " + savedproperty);
             User user = property.getOwner();
             user.setProperties_listed(user.getProperties_listed()+1);
+            user.setProperties_listing_limit(user.getProperties_listing_limit()-1);
             userService.updateUser(user);
             return savedproperty;
 
