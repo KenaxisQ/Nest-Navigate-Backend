@@ -2,7 +2,7 @@ name: Java CI pipeline
 
 on:
   push:
-    branches: [ "Dev" ]  # Trigger pipeline on push to "Dev" branch
+    branches: [ "Siddu" ]  # Trigger pipeline on push to "Dev" branch
 
 jobs:
   build:
