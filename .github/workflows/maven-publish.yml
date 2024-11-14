@@ -26,7 +26,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: nest-navigate  # Name of the artifact
-          path: target/nestNavigate.war  # Correct the path to where the WAR file is located (default is target/)
+          path: target/nestNavigator-0.0.1-SNAPSHOT.war  # Correct the path to where the WAR file is located (default is target/)
 
       - name: Deploy WAR to Local Tomcat
         if: success()  # Only execute if the artifact was uploaded successfully
@@ -37,4 +37,4 @@ jobs:
           # WAR_PATH: target/nestNavigate.war  # Path to the WAR file
         run: |
          # Deploy the WAR file using curl
-          curl -v -u "root:root" -T "target/nestNavigate.war" "http://192.168.0.105:8010/manager/text/deploy?path=/nestNavigator&update=true"
+          curl -v -u "root:root" -T "target/nestNavigator-0.0.1-SNAPSHOT.war" "http://192.168.0.105:8010/manager/text/deploy?path=/nestNavigator&update=true"
