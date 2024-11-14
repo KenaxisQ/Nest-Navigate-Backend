@@ -5,6 +5,11 @@ pipeline {
         maven 'local_home'
     }
 
+    environment {
+        IMAGE_NAME = "spring-boot-app"
+        IMAGE_TAG = "latest"
+    }
+
     stages {
         stage('Build') {
             steps {
@@ -14,6 +19,15 @@ pipeline {
                 success {
                     echo 'Archiving the artifacts'
                     archiveArtifacts artifacts: 'target/Test-0.0.1-SNAPSHOT.war', followSymlinks: false
+                }
+            }
+        }
+
+        stage('Docker Build') {
+            steps {
+                echo "Building the Docker image..."
+                script {
+                    docker.build("${nestnavigate}:${2.0}", ".")
                 }
             }
         }
