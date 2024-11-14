@@ -27,7 +27,7 @@ pipeline {
             steps {
                 echo "Building the Docker image..."
                 script {
-                    docker.build("${nestnavigate}:${2.0}", ".")
+                    docker.build("${nestnavigate}:${NEW}", ".")
                 }
             }
         }
