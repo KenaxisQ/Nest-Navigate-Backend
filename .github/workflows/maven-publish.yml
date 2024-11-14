@@ -37,7 +37,7 @@ jobs:
           # WAR_PATH: target/nestNavigate.war  # Path to the WAR file
         run: |
          # Deploy the WAR file using curl
-          Invoke-WebRequest -Uri "http://192.168.0.101:8088/manager/text/deploy?path=/nestNavigator-0.0.1-SNAPSHOT&update=true" `
+          Invoke-WebRequest -Uri "http://192.168.0.105:8010/manager/text/deploy?path=/nestNavigator-0.0.1-SNAPSHOT&update=true" `
                   -Credential (New-Object PSCredential("root", (ConvertTo-SecureString "root" -AsPlainText -Force))) `
                   -Method Put `
                   -InFile "target/nestNavigator-0.0.1-SNAPSHOT.war"
