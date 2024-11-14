@@ -37,4 +37,4 @@ jobs:
           # WAR_PATH: target/nestNavigate.war  # Path to the WAR file
         run: |
          # Deploy the WAR file using curl
-          curl -v -u "root:root" -T "target/nestNavigator-0.0.1-SNAPSHOT.war" "http://192.168.0.105:8010/manager/text/deploy?path=/nestNavigator&update=true"
+          curl -v -u "root:root" -T "target/nestNavigator-0.0.1-SNAPSHOT.war" "http://192.168.0.105:8010/manager/html/list"
