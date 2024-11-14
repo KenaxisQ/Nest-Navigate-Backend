@@ -22,16 +22,7 @@ pipeline {
                 }
             }
         }
-
-        stage('Docker Build') {
-            steps {
-                echo "Building the Docker image..."
-                script {
-                    docker.build("${nestnavigate}:${NEW}", ".")
-                }
-            }
-        }
-
+        
         stage('Deployments') {
             parallel {
                 stage('Deploy to Staging') {
