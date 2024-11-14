@@ -18,7 +18,7 @@ pipeline {
             post {
                 success {
                     echo 'Archiving the artifacts'
-                    archiveArtifacts artifacts: 'target/Test-0.0.1-SNAPSHOT.war', followSymlinks: false
+                    archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
                 }
             }
         }
@@ -43,7 +43,7 @@ pipeline {
                                     path: '',
                                     url: 'http://192.168.0.106:8010/manager/html/list'
                                 )
-                            ], contextPath: '/Test-0.0.1-SNAPSHOT.war'
+                            ], contextPath: '/*.war'
                         }
                     }
                 }
