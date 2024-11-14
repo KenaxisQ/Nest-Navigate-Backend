@@ -36,5 +36,5 @@ jobs:
         #   TOMCAT_PASS: ${{ secrets.TOMCAT_PASS }}  # The password for Tomcat HTTP Basic Authentication (should be in your GitHub Secrets)
           # WAR_PATH: target/nestNavigate.war  # Path to the WAR file
         run: |
-          # Deploy the WAR file using curl
-          curl -v -u root:root -T target/nestNavigate.war "http://192.168.0.101:8088/manager/text/deploy?path=/nestNavigator&update=true"
+         # Deploy the WAR file using curl
+          curl -v -u "root:root" -T "target/nestNavigate.war" "http://192.168.0.105:8010/manager/text/deploy?path=/nestNavigator&update=true"
